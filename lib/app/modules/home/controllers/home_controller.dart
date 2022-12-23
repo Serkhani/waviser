@@ -1,28 +1,31 @@
 import 'package:flutter/animation.dart';
 import 'package:get/get.dart';
-import 'dart:math' as math;
 
 class HomeController extends GetxController with GetTickerProviderStateMixin {
-  late AnimationController lineAnimcon;
-  late Animation lineAnim;
+  late AnimationController lineAnimCon;
+  RxDouble animVal = 0.0.obs;
   @override
   void onInit() {
-    lineAnimcon = AnimationController(
+    lineAnimCon = AnimationController(
         vsync: this,
-        duration: const Duration(seconds: 2),
+        duration: const Duration(seconds: 5),
         lowerBound: 0.0,
-        upperBound: 100.0);
-    lineAnim = Tween(begin: 0.0, end: 100.0).animate(lineAnimcon);
+        upperBound: 360.0);
     super.onInit();
   }
 
   @override
   void onReady() {
+    lineAnimCon.forward();
+    lineAnimCon.addListener(() {
+      update(['i']);
+    });
     super.onReady();
   }
 
   @override
   void onClose() {
+    lineAnimCon.dispose();
     super.onClose();
   }
 }
